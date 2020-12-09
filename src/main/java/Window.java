@@ -3,7 +3,7 @@ import java.awt.*;
 
 public class Window extends JFrame {
 
-    private JPanel heartRatePanel;
+    private JPanel mainPanel;
     private JPanel frequencyPanel;
 
     public Window(String name, int width, int height, HeartRatePlot heartRatePlot, FrequencyVisualizer bouncingBall, Timer timer){
@@ -18,11 +18,11 @@ public class Window extends JFrame {
         timer.setBorder(BorderFactory.createLineBorder(Color.BLACK, Parameters.borderThickness));
         timer.setFont(new Font(Parameters.font, Font.ITALIC, Parameters.fontSize));
 
-        this.heartRatePanel = new JPanel();
-        this.heartRatePanel.setLayout(new GridLayout());
-        this.heartRatePanel.setOpaque(true);
-        this.heartRatePanel.add(heartRatePlot);
-        this.heartRatePanel.add(timer);
+        this.mainPanel = new JPanel();
+        this.mainPanel.setLayout(new GridLayout());
+        this.mainPanel.setOpaque(true);
+        this.mainPanel.add(heartRatePlot);
+        this.mainPanel.add(timer);
 
         this.frequencyPanel = new JPanel();
         this.frequencyPanel.setLayout(new GridLayout());
@@ -33,7 +33,7 @@ public class Window extends JFrame {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setPreferredSize(new Dimension(width, height));
 
-        this.add(this.heartRatePanel, BorderLayout.NORTH);
+        this.add(this.mainPanel, BorderLayout.NORTH);
         this.add(this.frequencyPanel, BorderLayout.CENTER);
 
         this.pack();
