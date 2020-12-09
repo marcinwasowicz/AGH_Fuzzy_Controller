@@ -1,0 +1,50 @@
+FUNCTION_BLOCK
+VAR_INPUT
+rate : REAL;
+END_VAR
+VAR_INPUT
+time : REAL;
+END_VAR
+VAR_INPUT
+mass : REAL;
+END_VAR
+VAR_OUTPUT
+frequency : REAL;
+END_VAR
+FUZZIFY rate
+TERM rest := (70, 1) (90, 0.7) (100, 0.3) (130, 0.2) (140, 0);
+TERM elevated := (105, 0.7) (115, 0.9) (120, 1);
+TERM intense := (115, 0.3) (120, 0.7) (130, 1);
+TERM anaerobic := (130, 0.3) (135, 0.6) (145, 1);
+END_FUZZIFY
+FUZZIFY time
+TERM short := (0, 1) (10, 0.5) (20, 0);
+TERM medium := (20, 0.3) (30, 0.5) (40, 0.7);
+TERM long := (40, 0.4) (50, 0.7) (60, 1);
+END_FUZZIFY
+FUZZIFY mass
+TERM thin := (40, 1) (60, 0.6) (80, 0.2);
+TERM slim := (70, 0.3) (90, 0.6) (100, 0.1);
+TERM fat := (100, 0.4) (120, 1.0);
+END_FUZZIFY
+DEFUZZIFY frequency
+TERM slow := (0.0005, 1) (0.0007, 0.7) (0.01, 0);
+TERM moderate := (0.005, 0.7) (0.007, 0.9) (0.009, 0.5);
+TERM fast := (0.002, 0.2) (0.0095, 0.7) (0.01, 0.9);
+METHOD : COG;
+DEFAULT := 0.0025;
+END_DEFUZZIFY
+RULEBLOCK first
+AND: MIN;
+RULE 0: IF rate IS rest AND time IS short AND mass IS slim THEN frequency IS fast;
+RULE 1: IF rate IS rest AND time IS medium AND mass IS thin THEN frequency IS fast;
+RULE 2: IF rate IS elevated AND time IS short AND mass IS fat THEN frequency IS moderate;
+RULE 3: IF rate IS elevated AND time IS long AND mass IS fat THEN frequency IS fast;
+RULE 4: IF rate IS intense AND time IS short AND mass IS slim THEN frequency IS fast;
+RULE 5: IF rate IS intense AND time IS medium AND mass IS thin THEN frequency IS moderate;
+RULE 6: IF rate IS anaerobic AND time IS medium AND mass IS thin THEN frequency IS moderate;
+RULE 7: IF rate IS anaerobic AND time IS short AND mass IS fat THEN frequency IS fast;
+RULE 8: IF rate IS anaerobic AND time IS long AND mass IS slim THEN frequency IS slow;
+RULE 9: IF rate IS anaerobic AND time IS medium AND mass IS thin THEN frequency IS moderate;
+END_RULEBLOCK
+END_FUNCTION_BLOCK
